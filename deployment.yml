@@ -5,7 +5,7 @@ metadata:
   labels:
     app: bms
 spec:
-  replicas: 2
+  replicas: 2   # You can scale later if needed
   selector:
     matchLabels:
       app: bms
@@ -15,7 +15,19 @@ spec:
         app: bms
     spec:
       containers:
-        - name: bms-app
-          image: krupa8/bms:latest
+        - name: bms-container
+          image: krupa8/bms:latest    # Replace with your actual Docker image if different
           ports:
             - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

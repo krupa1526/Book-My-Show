@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bms-deploy
+  name: bms-deployment
+  labels:
+    app: bms
 spec:
   replicas: 2
   selector:
@@ -13,7 +15,7 @@ spec:
         app: bms
     spec:
       containers:
-      - name: bms
-        image: krupa8/bms:latest
-        ports:
-        - containerPort: 3000
+        - name: bms-app
+          image: krupa8/bms:latest
+          ports:
+            - containerPort: 3000

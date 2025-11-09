@@ -6,17 +6,22 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
-# Copy all app files and build production assets
+# Copy all app files
 COPY . .
+
+# Fix OpenSSL issue with Webpack (Node 17+)
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+# Build the production-ready static files
 RUN npm run build
 
 # ---------- Stage 2: Serve ----------
 FROM nginx:alpine
 
-# Copy the production build files from previous stage
+# Copy the build output to Nginx web directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 80 (nginx default)
+# Expose Nginx port
 EXPOSE 80
 
 # Start Nginx
